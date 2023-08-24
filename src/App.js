@@ -18,6 +18,7 @@ function App() {
     <BrowserRouter>
       <Navbar />
 
+
       <Routes>
 
         <Route path="/politica-rambursare" element={<RetourePolicy />} />
