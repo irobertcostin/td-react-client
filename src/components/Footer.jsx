@@ -3,7 +3,9 @@ import tiktok from "../images/tiktok2.png"
 import facebook from "../images/facebook.png"
 import insta from "../images/insta.png"
 import { useNavigate } from "react-router-dom";
-
+import tdlogo from "../images/td-logoalb.png"
+import netopia from "../images/netopia-black.png"
+import tdlogo2 from "../images/tdlogoremake.jpeg"
 
 
 
@@ -59,9 +61,16 @@ export default function Footer() {
     return (
         <footer
             className="bg-black text-center text-slate-300  lg:text-left">
+
+
+            <div className="w-full flex justify-center items-center">
+                <img src={tdlogo} className=" w-40"></img>
+            </div>
+
+
             <div
                 className="flex items-center justify-center border-b-2 border-slate-700 p-6  lg:justify-center">
-                <div className="mr-12 hidden lg:block">
+                <div className="mr-12 hidden sm:block">
                     <span>Retele de socializare:</span>
                 </div>
 
@@ -83,7 +92,7 @@ export default function Footer() {
             </div>
 
             <div className="mx-6 py-10 text-center md:text-left">
-                <div className="grid-1 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+                <div className="grid-1 grid gap-8 md:grid-cols-2 lg:grid-cols-3 lg:px-24">
 
                     {/* <div className="">
                         <h6
@@ -127,7 +136,7 @@ export default function Footer() {
                         </p>
                     </div> */}
 
-                    <div className="">
+                    <div className="flex flex-col sm:gap-1">
                         <h6
                             className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
                             Politici
@@ -214,13 +223,17 @@ export default function Footer() {
 
                     </div>
 
+                    <div className=" w-full flex justify-center items-center">
+                        <img src={netopia}></img>
+                    </div>
+
 
 
                 </div>
             </div>
 
 
-            <div className="bg-black p-6 text-center flex justify-center">
+            <div className="bg-black p-6 text-center flex flex-col sm:flex-row sm:gap-4 justify-center">
                 <span>© 2023 Copyright: </span>
                 <p
                     className="font-semibold text-slate-200"
