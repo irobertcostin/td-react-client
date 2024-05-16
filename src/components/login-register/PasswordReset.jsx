@@ -1,71 +1,92 @@
-import { useState, useRef, Fragment } from "react";
-import { ClipLoader } from "react-spinners"
-import { useNavigate } from "react-router-dom";
+
+import { useState, useMemo, Fragment, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom"
+import { ClipLoader } from "react-spinners";
 import UserService from "../../services/UserApi";
 import { Transition, Dialog } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 
 
-export default function Login() {
+export default function PasswordReset() {
 
-    const navigate = useNavigate()
     const userService = new UserService();
+    const navigate = useNavigate()
+    const cancelButtonRef = useRef(null)
 
-    const [loginAccountError, setLoginAccountError] = useState("")
-    const [loginPassError, setLoginPassError] = useState("")
+    const [resetError, setresetError] = useState()
     const [loading, setLoading] = useState(false)
+    const [open, setOpen] = useState(false)
+    const [throttleError, setThrottleError] = useState()
+
+    const [title, setTitle] = useState(false)
+    const [text, setText] = useState(false)
     const [user, setUser] = useState({
         email: "",
         password: ""
     })
 
-    const [regConfirmation, setRegConfirmation] = useState()
-    const [open, setOpen] = useState(false)
-    const cancelButtonRef = useRef(null)
+    const isValidEmail = (email) => {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailRegex.test(String(email).toLowerCase());
+    };
 
 
-    const { ...allData } = user;
-    const canSubmit = [...Object.values(allData)].every(Boolean);
-
-    const login = async () => {
-        if (loading) {
-            return
-        }
-
-
-        setLoginAccountError("")
-        setLoginPassError("")
-        setLoading(true)
-        const attempt = await userService.login(user)
-        if (attempt && attempt.message) {
-            let message = attempt.message
-            if (message.includes("password must be longer than or equal to 6 characters") || message.includes("Parola incorecta")) {
-                setLoginPassError(attempt.message)
-            } else if (message.includes("Un link de validare")) {
-                setOpen(true);
-                setRegConfirmation(attempt.message)
-            } else {
-                setLoginAccountError(attempt.message)
-            }
-        } else if (attempt && attempt.token) {
-            console.log(attempt.token);
-        }
-        setLoading(false)
+    const isValidPassword = (password) => {
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/;
+        return passwordRegex.test(password);
     };
 
 
 
+    const sendResetLink = async () => {
+        if (loading) {
+            return
+        }
+        setLoading(true)
+        const attempt = await userService.forgottenPassword(user);
+
+        if (attempt.message.includes("valid 15 minute.")) {
+            setText(attempt.message)
+            setTitle("Confirmare resetare parola")
+            setOpen(true)
+        } else if (attempt.statusCode == 404) {
+            setresetError(attempt.message)
+        } else if (attempt.statusCode == 429) {
+            setThrottleError(attempt.message);
+        }
+        setLoading(false)
+    }
+
+
+
+    const canSubmit = useMemo(() => {
+        const isValid = Object.values(user).every(Boolean);
+        const isValidEmailValue = isValidEmail(user.email);
+        const isValidPasswordValue = isValidPassword(user.password);
+        return isValid && isValidEmailValue && isValidPasswordValue
+    }, [user]);
+
+
+    useEffect(() => {
+        if (user.email == "") {
+            setresetError("")
+        }
+        if (!isValidEmail(user.email)) {
+            setresetError("")
+        }
+    }, [user])
+
     return (
-        <div className="h-[80vh]   flex justify-center items-center">
+        <div className="h-[80vh]  flex justify-center items-center">
             <div className="w-full max-w-xs lg:max-w-md">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm lg:max-w-md">
                     <h2 className="text-start text-3xl font-bold leading-9 tracking-tight text-white">
-                        Autentificare
+                        Resetare parola
                     </h2>
                 </div>
-                <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm lg:max-w-md">
-                    <div className="space-y-6" >
-                        <div>
+                <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm lg:max-w-md py-5">
+                    <div className="flex flex-col gap-4">
+                        <div className="">
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
                                 Email
                             </label>
@@ -76,7 +97,7 @@ export default function Login() {
                                     type="email"
                                     autoComplete="email"
                                     required
-                                    placeholder="Email"
+                                    placeholder="Exemplu: nick@gmail.com"
                                     onChange={(e) => {
                                         setUser({
                                             ...user,
@@ -88,22 +109,26 @@ export default function Login() {
                                 />
                             </div>
                             <div className="h-2">
-                                {loginAccountError !== "" && (
-                                    <div className="text-red-500 text-sm">{loginAccountError}</div>
+                                {user.email && !isValidEmail(user.email) && (
+                                    <div className="text-red-500 text-sm">Format email invalid</div>
+                                )}
+                            </div>
+
+                            <div className="h-2">
+                                {resetError !== "" && (
+                                    <div className="text-red-500 text-sm">{resetError}</div>
                                 )}
                             </div>
                         </div>
                         <div>
                             <div className="flex items-center justify-between ">
                                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-white">
-                                    Parola
+                                    Parola noua
                                 </label>
-                                <div className="text-sm">
-                                    <button
-                                        onClick={() => { navigate("/resetare-parola") }}
-                                        className="font-semibold text-amber-400 hover:text-amber-300 ">
-                                        Ai uitat parola?
-                                    </button>
+                                <div className="text-[8px] w-[50%] text-end">
+                                    <p className="font-semibold text-slate-400 ">
+                                        Min. 6 caractere, dintre care o cifra, o majuscula si un caracter special
+                                    </p>
                                 </div>
                             </div>
                             <div className="mt-2">
@@ -112,6 +137,7 @@ export default function Login() {
                                     name="password"
                                     type="password"
                                     autoComplete="password"
+                                    placeholder="Parola noua"
                                     required
                                     onChange={(e) => {
                                         setUser({
@@ -123,35 +149,36 @@ export default function Login() {
                                     className="block w-full px-4 outline-0 rounded-sm py-1.5 text-white sm:text-sm sm:leading-6 bg-slate-800"
                                 />
                                 <div className="h-2">
-                                    {loginPassError !== "" && (
-                                        <div className="text-red-500 text-sm">{loginPassError}</div>
+                                    {user.password && !isValidPassword(user.password) && (
+                                        <div className="text-red-500 text-sm">Parola invalida</div>
                                     )}
                                 </div>
-
                             </div>
                         </div>
-
-                        <div className="">
-                            <button
-                                onClick={login}
-                                disabled={!canSubmit}
-                                className={`${!canSubmit ? "bg-slate-500 text-white" : " bg-amber-400 hover:bg-amber-300 text-black"} "flex w-full lg:max-w-md mt-10 justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6  "`}
-                            >
-                                {
-                                    loading ?
-                                        <div className="text-white flex justify-center h-6">
-                                            <ClipLoader color="black" size={"20px"} />
-                                        </div>
-                                        :
-                                        <>Autentifica-te</>
-                                }
-                            </button>
+                        <button
+                            onClick={sendResetLink}
+                            disabled={!canSubmit}
+                            className={`${!canSubmit ? "bg-slate-500 " : " bg-amber-400 hover:bg-amber-300 text-black"} "flex w-full lg:max-w-md mt-10 justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6 text-black "`}
+                        >
+                            {
+                                loading ?
+                                    <div className="text-white flex justify-center h-6">
+                                        <ClipLoader color="black" size={"20px"} />
+                                    </div>
+                                    :
+                                    <>Reseteaza parola</>
+                            }
+                        </button>
+                        <div className="w-full justify-center items-center h-4">
+                            {throttleError !== "" && (
+                                <div className="text-red-500 text-sm">{throttleError}</div>
+                            )}
                         </div>
                     </div>
-                    <div className="mt-10 text-center text-sm text-gray-500">
-                        Nu ai cont?{' '}
-                        <button onClick={() => { navigate('/inregistrare') }} className="font-semibold leading-6 text-amber-400 hover:text-amber-300">
-                            Inregistreaza-te aici
+                    <div className="mt-10 text-center text-sm text-slate-300">
+                        Inapoi la {' '}
+                        <button onClick={() => { navigate('/autentificare') }} className="font-semibold leading-6 text-amber-400 hover:text-amber-300">
+                            Autentificare
                         </button>
                     </div>
                 </div>
@@ -189,16 +216,11 @@ export default function Login() {
                                             </div>
                                             <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                                 <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-500">
-                                                    Validare cont
+                                                    {title}
                                                 </Dialog.Title>
                                                 <div className="mt-2">
                                                     <p className="text-sm text-black">
-
-                                                        {
-                                                            regConfirmation &&
-                                                            <>{regConfirmation}</>
-                                                        }
-
+                                                        {text}
                                                     </p>
                                                 </div>
                                             </div>
