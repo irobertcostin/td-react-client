@@ -13,7 +13,7 @@ export default function TermsPolicy() {
 
 
     return (
-        <div className="relative pt-8 lg:pt-14">
+        <div className="relative pt-8 my-20 lg:pt-14">
 
             <img src={backArrow} onClick={goHomepage} className="w-8 sm:w-10 absolute top-5 left-7 cursor-pointer sm:left-11"></img>
 
