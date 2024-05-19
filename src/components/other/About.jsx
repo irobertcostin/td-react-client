@@ -1,7 +1,7 @@
-import groupicon from "../images/groupicon.png"
-import modernicon from "../images/modernicon.png"
-import bookicon from "../images/bookicon.png"
-import instagramicon from "../images/instagramicon.png"
+import groupicon from "../../images/groupicon.png"
+import modernicon from "../../images/modernicon.png"
+import bookicon from "../../images/bookicon.png"
+import instagramicon from "../../images/instagramicon.png"
 
 
 
