@@ -95,6 +95,15 @@ export default class UserService {
     }
 
 
+    async getUser(token) {
+        try {
+            let data = await this.api('/get-user', "GET", null, token)
+            let resp = await data.json();
+            return resp
+        } catch (error) {
+            return error;
+        }
+    }
 
 
 }
