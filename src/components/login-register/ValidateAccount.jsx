@@ -104,7 +104,6 @@ export default function ValidateAccount() {
                                                             className={`bg-[#5A3AF8] hover:bg-[#7358fa] "} "flex w-full lg:max-w-md mt-10 justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6 text-white "`}
                                                         >
                                                             {
-
                                                                 loadingAction ?
                                                                     <div className="text-white flex justify-center h-6">
                                                                         <ClipLoader color="white" size={"20px"} />

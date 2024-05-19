@@ -1,6 +1,6 @@
 
 
-import heroimage from "../images/tinahero.png"
+import heroimage from "../../images/tinahero.png"
 import { TypeAnimation, GraphemeSplitter } from "react-type-animation"
 
 
@@ -9,7 +9,7 @@ import { TypeAnimation, GraphemeSplitter } from "react-type-animation"
 export default function Hero() {
 
     return (
-        <div className="w-full mt-20 ">
+        <div className="w-full   ">
 
             <div className="w-full relative  min-h-[62vh] flex justify-center">
                 <img src={heroimage} className=""></img>

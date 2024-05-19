@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
+
+
+
+
 export const statuses = {
     SIGNED_IN: "signed_in",
     SIGNED_OUT: "signed_out",
@@ -52,9 +57,6 @@ const userSlice = createSlice({
         resetState(state) {
             resetUserState(state);
         }
-
-
-
     }
 });
 

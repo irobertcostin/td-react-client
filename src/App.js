@@ -14,11 +14,12 @@ import Login from "./components/login-register/Login";
 import store from "./components/redux-store/Store";
 import { Provider } from "react-redux"
 import Register from "./components/login-register/Register";
-import Courses from "./components/Courses";
+import Courses from "./components/other/Courses";
 import ConfirmPasswordReset from "./components/login-register/ConfirmPasswordReset";
 import PasswordReset from "./components/login-register/PasswordReset";
 import ValidateAccount from "./components/login-register/ValidateAccount";
-
+import PrivateRoute from "./components/login-register/PrivateRoute";
+import MyAccount from "./components/user/MyAccount";
 
 
 
@@ -30,16 +31,16 @@ function App() {
         <ScrollToTop />
         <div className="w-full pt-32">
           <Routes>
-            <Route path="/" element={<Home />} />
 
+            <Route element={<PrivateRoute />}>
+              <Route path="/contul-meu" element={<MyAccount />} />
+            </Route>
             <Route path="/" element={<Home />} />
-            <Route path="/autentificare" element={<Login />} />
             <Route path="/inregistrare" element={<Register />} />
+            <Route path="/autentificare" element={<Login />} />
             <Route path="/validare-cont/:token" element={<ValidateAccount />} />
             <Route path="/resetare-parola" element={<PasswordReset />} />
             <Route path="/confirmare-resetare-parola/:token" element={<ConfirmPasswordReset />} />
-
-
 
 
             <Route path="/politica-rambursare" element={<RetourePolicy />} />

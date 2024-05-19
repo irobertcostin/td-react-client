@@ -1,8 +1,8 @@
-import Hero from "../Hero"
-import Testimonials from "../Testimonials"
-import Contact from "../Contact"
-import AboutMe from "../About"
-import Courses from "../Courses"
+import Hero from "../other/Hero"
+import Testimonials from "../other/Testimonials"
+import Contact from "../other/Contact"
+import AboutMe from "../other/About"
+import Courses from "../other/Courses"
 
 
 
