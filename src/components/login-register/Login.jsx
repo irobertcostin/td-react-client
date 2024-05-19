@@ -4,12 +4,23 @@ import { useNavigate } from "react-router-dom";
 import UserService from "../../services/UserApi";
 import { Transition, Dialog } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
+import { useDispatch, useSelector } from "react-redux";
+import { signedIn, statuses } from "../redux-store/user/User.reducer";
+import { selectToken, selectUser, selectUserStatus } from "../redux-store/user/User.selector";
+
+
 
 
 export default function Login() {
 
     const navigate = useNavigate()
     const userService = new UserService();
+
+    const dispatch = useDispatch();
+    const status = useSelector(selectUserStatus)
+    const token = useSelector(selectToken)
+
+
 
     const [loginAccountError, setLoginAccountError] = useState("")
     const [loginPassError, setLoginPassError] = useState("")
@@ -27,12 +38,17 @@ export default function Login() {
     const { ...allData } = user;
     const canSubmit = [...Object.values(allData)].every(Boolean);
 
+
+    const getUser = async (token) => {
+
+        const user = await userService.getUser(token);
+        return user;
+    }
+
     const login = async () => {
         if (loading) {
             return
         }
-
-
         setLoginAccountError("")
         setLoginPassError("")
         setLoading(true)
@@ -48,7 +64,9 @@ export default function Login() {
                 setLoginAccountError(attempt.message)
             }
         } else if (attempt && attempt.token) {
-            console.log(attempt.token);
+            let user = await getUser(attempt.token)
+            dispatch(signedIn({ user: user, token: attempt.token, status: statuses.SIGNED_IN }))
+            navigate("/")
         }
         setLoading(false)
     };

@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from "../../images/tina-logos/1.png"
 import { useNavigate } from "react-router-dom";
-
+import { selectUser } from '../redux-store/user/User.selector';
+import { useSelector } from 'react-redux';
 
 
 
@@ -12,31 +13,25 @@ export default function Navbar() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const navigate = useNavigate()
 
+    const user = useSelector(selectUser)
+
 
 
     const navigation = [
         { name: 'Acasa', path: "/" },
-        { name: 'Despre mine', },
         { name: 'Cursuri', path: '/cursuri' },
-        { name: 'Feedback', },
-        { name: 'Contact', },
-        { name: 'Intra in cont', path: '/autentificare' },
+        { name: 'Contul meu', path: '/contul-meu' }
     ]
-
 
 
 
     return (
         <nav className="w-full ">
-            <header className="absolute inset-x-0 top-0 z-50">
-
-
+            <header className="absolute inset-x-0 top-0 z-50 lg:px-20">
                 <nav className="flex items-center justify-between p-6 lg:px-8 " aria-label="Global">
-
                     <div className=' w-80'>
                         <img src={logo} alt='logo'></img>
                     </div>
-
                     <div className="flex lg:hidden w-full  justify-end">
                         <button
                             type="button"
@@ -47,22 +42,15 @@ export default function Navbar() {
                             <Bars3Icon className="h-8 w-8 text-white" aria-hidden="true" />
                         </button>
                     </div>
-
-
-
                     <div className="hidden lg:flex lg:gap-x-12 relative z-50 xl:mt-2 xl:ml-10 justify-end  w-full">
                         {navigation.map((item) => (
-                            <button onClick={() => { if (item.path) { navigate(item.path) } }} key={item.name} href={item.href} alt={item.name} className="text-xl font-semibold xl:font-normal text-white ">
+                            <button onClick={() => { if (item.path) { navigate(item.path) } }} key={item.name} href={item.href} alt={item.name}
+                                className="text-xl font-semibold xl:font-normal text-white ">
                                 {item.name}
                             </button>
                         ))}
                     </div>
-
-
                 </nav>
-
-
-
                 <Dialog as="div" className="lg:hidden " open={mobileMenuOpen} onClose={setMobileMenuOpen}>
                     <div className="fixed inset-0 z-50 " />
                     <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-black px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
@@ -111,10 +99,6 @@ export default function Navbar() {
                         </div>
                     </Dialog.Panel>
                 </Dialog>
-
-
-
-
             </header>
         </nav>
     )
