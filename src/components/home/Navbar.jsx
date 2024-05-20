@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
 import { Dialog } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon, UserCircleIcon, ShoppingBagIcon } from '@heroicons/react/24/outline'
 import logo from "../../images/tina-logos/1.png"
 import { useNavigate } from "react-router-dom";
 import { selectUser } from '../redux-store/user/User.selector';
 import { useSelector } from 'react-redux';
-
+import ShoppingCart from '../user/ShoppingCart';
 
 
 export default function Navbar() {
 
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const [openCart, setOpenCart] = useState(false)
     const navigate = useNavigate()
 
     const user = useSelector(selectUser)
@@ -32,7 +33,16 @@ export default function Navbar() {
                     <div className=' w-80'>
                         <img src={logo} alt='logo'></img>
                     </div>
-                    <div className="flex lg:hidden w-full  justify-end">
+                    <div className="flex lg:hidden w-full  justify-end  gap-4">
+                        <button onClick={() => { navigate("/contul-meu") }} className='flex lg:hidden  w-8'>
+                            <UserCircleIcon color='white' />
+                        </button>
+                        {
+                            user &&
+                            <button onClick={() => { setOpenCart(true) }} className='flex lg:hidden  w-7'>
+                                <ShoppingBagIcon color='white' />
+                            </button>
+                        }
                         <button
                             type="button"
                             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
@@ -45,10 +55,16 @@ export default function Navbar() {
                     <div className="hidden lg:flex lg:gap-x-12 relative z-50 xl:mt-2 xl:ml-10 justify-end  w-full">
                         {navigation.map((item) => (
                             <button onClick={() => { if (item.path) { navigate(item.path) } }} key={item.name} href={item.href} alt={item.name}
-                                className="text-xl font-semibold xl:font-normal text-white ">
+                                className="text-2xl font-semibold xl:font-normal text-white ">
                                 {item.name}
                             </button>
                         ))}
+                        {
+                            user &&
+                            <button onClick={() => { setOpenCart(true) }} className='hidden lg:flex  w-8'>
+                                <ShoppingBagIcon color='white' />
+                            </button>
+                        }
                     </div>
                 </nav>
                 <Dialog as="div" className="lg:hidden " open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -99,7 +115,9 @@ export default function Navbar() {
                         </div>
                     </Dialog.Panel>
                 </Dialog>
+                <ShoppingCart open={openCart} setOpen={setOpenCart} />
             </header>
+
         </nav>
     )
 }
