@@ -1,9 +1,7 @@
-import Hero from "../other/Hero"
-import Testimonials from "../other/Testimonials"
-import Contact from "../other/Contact"
-import AboutMe from "../other/About"
-import Courses from "../other/Courses"
-
+import Hero from "./home-components/Hero"
+import AboutMe from "./home-components/About"
+import Courses from "./home-components/Courses"
+import Footer from "./Footer"
 
 
 export default function Home() {
@@ -17,9 +15,7 @@ export default function Home() {
             <Hero />
             <AboutMe />
             <Courses />
-            {/* <Testimonials /> */}
-            {/* <Contact /> */}
-
+            <Footer />
         </div>
     )
 }

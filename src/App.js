@@ -1,10 +1,9 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/home/Navbar"
-import Footer from "./components/home/Footer"
 import Home from "./components/home/Home";
 import ScrollToTop from "./components/ScrollToTop";
-
+import Products from "./components/products/Products";
 import RetourePolicy from "./components/politics/RetourePolicy";
 import PaymentPolicy from "./components/politics/PaymentPolicy";
 import TermsPolicy from "./components/politics/TermsPolicy";
@@ -14,7 +13,6 @@ import Login from "./components/login-register/Login";
 import store from "./components/redux-store/Store";
 import { Provider } from "react-redux"
 import Register from "./components/login-register/Register";
-import Courses from "./components/other/Courses";
 import ConfirmPasswordReset from "./components/login-register/ConfirmPasswordReset";
 import PasswordReset from "./components/login-register/PasswordReset";
 import ValidateAccount from "./components/login-register/ValidateAccount";
@@ -41,8 +39,7 @@ function App() {
             <Route path="/validare-cont/:token" element={<ValidateAccount />} />
             <Route path="/resetare-parola" element={<PasswordReset />} />
             <Route path="/confirmare-resetare-parola/:token" element={<ConfirmPasswordReset />} />
-
-
+            <Route path="/cursuri" element={<Products />} />
             <Route path="/politica-rambursare" element={<RetourePolicy />} />
             <Route path="/politica-inscriere" element={<RegistrationPolicy />} />
             <Route path="/politica-utilizare" element={<UtilizationPolicy />} />
@@ -55,7 +52,6 @@ function App() {
 
           </Routes>
         </div>
-        <Footer />
       </BrowserRouter>
     </Provider>
   );
