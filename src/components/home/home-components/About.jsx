@@ -1,7 +1,7 @@
-import groupicon from "../../images/groupicon.png"
-import modernicon from "../../images/modernicon.png"
-import bookicon from "../../images/bookicon.png"
-import instagramicon from "../../images/instagramicon.png"
+import groupicon from "../../../images/groupicon.png"
+import modernicon from "../../../images/modernicon.png"
+import bookicon from "../../../images/bookicon.png"
+import instagramicon from "../../../images/instagramicon.png"
 
 
 
@@ -41,7 +41,7 @@ export default function AboutMe() {
 
 
     return (
-        <div className="w-full  grid grid-cols-1 sm:grid-cols-2 sm:gap-10 text-white px-4 py-10 gap-5 sm:px-10 xl:grid-cols-4 xl:py-20">
+        <div className="w-full  grid grid-cols-1 sm:grid-cols-2 sm:gap-10 text-white px-4 py-20 gap-5 sm:px-10 xl:grid-cols-4 xl:py-32">
 
 
             {
@@ -64,10 +64,6 @@ export default function AboutMe() {
     )
 }
 
-// despre mine 
-// si dupa video cu secvente 
-// si dupa sa apara cursurile 
-// feedback
 
 
 
